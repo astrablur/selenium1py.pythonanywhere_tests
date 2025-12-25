@@ -1,4 +1,5 @@
 from .base_page import BasePage
+from .locators import MainPageLocators
 
 
 class MainPage(BasePage):
@@ -8,5 +9,5 @@ class MainPage(BasePage):
 
     def should_be_login_link(self):
         assert self.is_element_present(
-            'id', 'login_link'
+            *MainPageLocators.LOGIN_LINK
         ), 'Login link is not presented'
