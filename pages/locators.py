@@ -1,5 +1,5 @@
-class MainPageLocators:
-    LOGIN_LINK = ('id', 'loginlink')
+class BasePageLocators:
+    LOGIN_LINK = ('id', 'login_link')
 
 
 class LoginPageLocators:
@@ -11,8 +11,8 @@ class ProductPageLocators:
     PRODUCT_NAME = ('css selector', '.product_main h1')
     PRODUCT_PRICE = ('css selector', '.product_main .price_color')
     ADD_TO_BASKET_BUTTON = ('css selector', '.btn-add-to-basket')
-    SUCCESS_MSG = (
+    SUCCESS_MESSAGE = (
         'css selector',
         '.alert-success:nth-child(1) .alertinner strong',
     )
-    BASKET_PRICE_MSG = ('css selector', '.alert-info strong')
+    BASKET_PRICE_MESSAGE = ('css selector', '.alert-info strong')
