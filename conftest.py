@@ -29,7 +29,6 @@ def browser(request):
     )
 
     driver = webdriver.Chrome(options=driver_options)
-    driver.user_language = user_language
     yield driver
 
     print('\nQuit browser')
