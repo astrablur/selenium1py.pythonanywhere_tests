@@ -1,6 +1,7 @@
 class BasePageLocators:
     CHECKOUT_BASKET_LINK = ('css selector', '.basket-mini a')
     LOGIN_LINK = ('id', 'login_link')
+    USER_ICON = ('class name', 'icon-user')
 
 
 class BasketPageLocators:
@@ -11,6 +12,14 @@ class BasketPageLocators:
 class LoginPageLocators:
     LOGIN_FORM = ('id', 'login_form')
     REGISTER_FORM = ('id', 'register_form')
+    REGISTRATION_FORM_EMAIL_INPUT = ('id', 'id_registration-email')
+    REGISTRATION_FORM_PASSWORD_INPUT = ('id', 'id_registration-password1')
+    REGISTRATION_FORM_CONFIRM_PASSWORD_INPUT = (
+        'id',
+        'id_registration-password2',
+    )
+    SUBMIT_REGISTRATION_BUTTON = ('name', 'registration_submit')
+    THANKS_FOR_REGISTRATION_ALERT = ('css selector', '.alert-success')
 
 
 class ProductPageLocators:
