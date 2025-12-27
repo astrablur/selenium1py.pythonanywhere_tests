@@ -41,6 +41,16 @@ def test_guest_cant_see_success_message(browser):
     product_page.should_not_be_success_message()
 
 
+def test_add_to_basket_button_is_present_on_product_page(browser):
+    link = (
+        f'https://selenium1py.pythonanywhere.com/catalogue/'
+        f'coders-at-work_207/'
+    )
+    product_page = ProductPage(browser, link)
+    product_page.open()
+    product_page.assert_add_to_basket_button_is_present_and_active()
+
+
 @pytest.mark.need_review
 @pytest.mark.parametrize(
     'num',

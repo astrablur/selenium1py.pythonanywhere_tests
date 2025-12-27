@@ -3,6 +3,21 @@ from pages.locators import ProductPageLocators
 
 
 class ProductPage(BasePage):
+    def assert_add_to_basket_button_is_present_and_active(self):
+        self.is_element_present(
+            *ProductPageLocators.ADD_TO_BASKET_BUTTON
+        ), 'Add to basket button is not present, but should be'
+
+        add_to_basket_button = self.browser.find_element(
+            *ProductPageLocators.ADD_TO_BASKET_BUTTON
+        )
+        assert (
+            add_to_basket_button.is_displayed()
+        ), 'Add to basket button is not displayed, but should be.'
+        assert (
+            add_to_basket_button.is_enabled()
+        ), 'Add to basket button is not enabled, but should be.'
+
     def assert_basket_messages(self):
         self.assert_success_message()
         self.assert_product_name_matches_original_product_name()
