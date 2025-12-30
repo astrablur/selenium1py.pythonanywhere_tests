@@ -1,0 +1,125 @@
+name: selenium1py.pythonanywhere tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      deployment_target:
+        description: Choose target
+        required: true
+        default: all_tests
+        type: choice
+        options:
+          - all_tests
+          - basket_tests
+          - guest_tests
+          - login_tests
+          - main_page_tests
+          - product_page_tests
+          - smoke_tests
+          - user_tests
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run all tests for push/PR
+        if: github.event_name == 'push' || github.event_name == 'pull_request'
+        run: pytest
+
+      - name: Run all tests
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.deployment_target == 'all_tests'
+        run: pytest
+
+      - name: Run tests connecting with basket
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.deployment_target == 'basket_tests'
+        run: pytest -m basket
+
+      - name: Run tests for unauthorized user
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.deployment_target == 'guest_tests'
+        run: pytest -m guest
+
+      - name: Run tests connected with authentication
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.deployment_target == 'login_tests'
+        run: pytest -m login
+
+      - name: Run tests for Main page
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.deployment_target == 'main_page_tests'
+        run: pytest -m main_page
+
+      - name: Run tests for Product page
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.deployment_target == 'product_page_tests'
+        run: pytest -m product_page
+
+      - name: Run regression tests
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.deployment_target == 'regression_tests'
+        run: pytest -m regression
+
+      - name: Run smoke tests
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.deployment_target == 'smoke_tests'
+        run: pytest -m smoke
+
+      - name: Run tests for authorized user
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.deployment_target == 'user_tests'
+        run: pytest -m user
+
+      - name: Upload Allure results as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
+          retention-days: 1
+
+
+  publish-report:
+    runs-on: ubuntu-latest
+    needs: run-tests
+    if: always()
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Download Allure results artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: allure-results
+          path: allure-results
+
+      - name: Get Allure history
+        uses: actions/checkout@v5
+        if: always()
+        continue-on-error: true
+        with:
+          ref: gh-pages
+          path: gh-pages
+
+      - name: Generate Allure Report
+        uses: simple-elf/allure-report-action@master
+        if: always()
+        with:
+          allure_results: allure-results
+          gh_pages: gh-pages
+          keep_reports: 20
+
+      - name: Deploy report to Github Pages
+        uses: peaceiris/actions-gh-pages@v4
+        if: always()
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
