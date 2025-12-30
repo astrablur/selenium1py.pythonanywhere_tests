@@ -1,0 +1,4 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","1696","Guest can go to login page from Main page","tests","Tue Dec 30 20:09:49 UTC 2025","passed","Tue Dec 30 20:09:51 UTC 2025","TestMainPage","test_main_page","",""
+"","6661","Empty basket opened from Main page has no products","tests","Tue Dec 30 20:09:49 UTC 2025","passed","Tue Dec 30 20:09:56 UTC 2025","TestMainPage","test_main_page","",""
+"","1242","Guest should see login link on Main page","tests","Tue Dec 30 20:09:49 UTC 2025","passed","Tue Dec 30 20:09:50 UTC 2025","TestMainPage","test_main_page","",""
